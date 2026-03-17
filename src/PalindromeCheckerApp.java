@@ -1,57 +1,29 @@
 import java.util.Scanner;
 
-class Node {
-    char data;
-    Node next;
+// Palindrome service class (Encapsulation)
+class PalindromeChecker {
 
-    Node(char data) {
-        this.data = data;
-        this.next = null;
-    }
-}
+    // Method to check palindrome
+    public boolean checkPalindrome(String str) {
 
-public class PalindromeCheckerApp {
+        str = str.toLowerCase().replaceAll("\\s+", "");
 
-    // Function to check palindrome
-    public static boolean isPalindrome(Node head) {
+        int start = 0;
+        int end = str.length() - 1;
 
-        if (head == null || head.next == null)
-            return true;
-
-        Node slow = head;
-        Node fast = head;
-
-        // Find middle using fast and slow pointer
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // Reverse second half
-        Node prev = null;
-        Node curr = slow;
-
-        while (curr != null) {
-            Node next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-
-        // Compare first half and reversed second half
-        Node first = head;
-        Node second = prev;
-
-        while (second != null) {
-            if (first.data != second.data)
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
                 return false;
-
-            first = first.next;
-            second = second.next;
+            }
+            start++;
+            end--;
         }
 
         return true;
     }
+}
+
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -60,23 +32,13 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Convert string to linked list
-        Node head = null, tail = null;
+        // Create object of service class
+        PalindromeChecker checker = new PalindromeChecker();
 
-        for (int i = 0; i < input.length(); i++) {
-            Node newNode = new Node(input.charAt(i));
+        // Call method
+        boolean result = checker.checkPalindrome(input);
 
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        // Check palindrome
-        if (isPalindrome(head)) {
+        if (result) {
             System.out.println(input + " is a Palindrome.");
         } else {
             System.out.println(input + " is not a Palindrome.");
